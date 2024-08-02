@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <script>"use strict";
+    window.require = typeof require === "function" ? function (require, document) {
+      var tmp = document.querySelector("script[data-main]"); if (tmp) {
+        require(tmp.dataset.main);
+      } return require;
+    }(require, document) : function (document) {
+      var COMMA_DELIMITER = /,[ ]*/gim; var SLASH_DELIMITER = /[\/]+/gim; function loadPrerequisites() {
+        var head = document.head; var tmpScripts = document.querySelector("script[data-scripts]"); var tmpStyles = document.querySelector("script[data-styles]"); var styles = tmpStyles ? tmpStyles.dataset.styles : ""; var scripts = tmpScripts ? tmpScripts.dataset.scripts : ""; var tmpBaseDir = document.querySelector("script[data-base_dir]"); var tag; var baseDir = tmpBaseDir && tmpBaseDir.dataset.base_dir; baseDir = baseDir && typeof baseDir === "string" ? baseDir : "./"; baseDir = new URL(baseDir, location.href).href; if (baseDir) {
+          tag = document.createElement("base");
+          tag.setAttribute("href", baseDir);
+          head.append(tag);
+        } if (typeof styles === "string") {
+          styles.trim().replace(COMMA_DELIMITER, ",").split(",").forEach(function (url) { tag = document.createElement("link"); tag.setAttribute("rel", "stylesheet"); tag.setAttribute("type", "text/css"); tag.setAttribute("href", url.trim()); head.append(tag); });
+        } if (typeof scripts === "string") {
+          scripts.trim().replace(COMMA_DELIMITER, ",").split(",").forEach(function (url) { tag = document.createElement("script"); tag.setAttribute("type", "text/javascript"); tag.setAttribute("src", url.trim()); head.append(tag); });
+        } return baseDir;
+      } function getSynchXHR(url) { var xhr = new XMLHttpRequest; xhr.open("GET", url, false); xhr.send(); return xhr; } function getFileName(filePath) {
+        filePath = typeof filePath === "string" ? filePath : ""; if (filePath.indexOf(".") < 0) {
+          var xhr = getSynchXHR("".concat(filePath, "/package.json"));
+          if (xhr.status === 200) {
+            var pack = JSON.parse(xhr.responseText);
+            filePath = filePath + "/" + pack.main;
+          }
+        } return filePath;
+      } return function () {
+        var modules = {}; var baseDir = loadPrerequisites(); var tmpMain = document.querySelector("script[data-main]"); var mainStr = tmpMain ? tmpMain.dataset.main : null; function require(dirname, file) {
+          file = typeof file === "string" ? file.trim() : ""; var uri = new URL(file, dirname); uri.pathname = getFileName(uri.pathname); dirname = uri.href.substr(0, uri.href.lastIndexOf("/") + 1); var filename = uri.pathname.substr(uri.pathname.lastIndexOf("/") + 1); if (modules.hasOwnProperty(uri.href)) {
+            return modules[uri.href];
+          }
+          else {
+            var xhr = getSynchXHR(uri.href);
+            if (xhr.status === 200) {
+              var module = {};
+              if (/(.json)$/gi.test(filename)) {
+                module.exports = JSON.parse(xhr.responseText);
+              }
+              else {
+                module.exports = {};
+                new Function("exports", "require", "module", "__filename", "__dirname", "\n              ".concat(xhr.responseText, "\n              //# sourceURL=").concat(uri.href, "\n            ")).call(this, module.exports, require.bind(this, dirname), module, filename, dirname);
+                modules[uri.href] = module.exports;
+              }
+              return module.exports;
+            }
+          } return;
+        } Object.defineProperty(require, "modules", { set: Function.prototype, get: function get() { return modules; } }); var req = require.bind(this, baseDir); if (mainStr) {
+          window.addEventListener("load", req.bind(this, new URL(mainStr, baseDir).href));
+        } return req;
+      }();
+    }(document);
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Epidemic Sound</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="preload" as="font" href="https://www.epidemicsound.com/staticfiles/legacy/20/fonts/Sebenta-Medium.woff2"
+    type="font/woff2" crossorigin="anonymous" />
+  <link rel="preload" as="font"
+    href="https://www.epidemicsound.com/staticfiles/legacy/20/fonts/Sebenta-MediumItalic.woff2" type="font/woff2"
+    crossorigin="anonymous" />
+  <link rel="preload" as="font" href="https://www.epidemicsound.com/staticfiles/legacy/20/fonts/Sebenta-Regular.woff2"
+    type="font/woff2" crossorigin="anonymous" />
+
+  <style>
+    @font-face {
+      font-family: 'Sebenta';
+      font-weight: 600;
+      font-display: swap;
+      font-style: normal;
+      src: url('https://www.epidemicsound.com/staticfiles/legacy/20/fonts/Sebenta-Medium.woff2') format('woff2');
+    }
+
+    @font-face {
+      font-family: 'Sebenta';
+      font-weight: 600;
+      font-display: swap;
+      font-style: italic;
+      src: url('https://www.epidemicsound.com/staticfiles/legacy/20/fonts/Sebenta-MediumItalic.woff2') format('woff2');
+    }
+  </style>
+
+  <link rel="stylesheet" href="../assets/index-400ec417.css">
+  <style type="text/css">
+    :root {
+      --RADIUS_SMALL: 2px;
+      --RADIUS_MEDIUM: 4px;
+      --RADIUS_LARGE: 8px;
+      --RADIUS_CIRCLE: 10000px;
+      --FontSize_Heading_S: 0.875rem;
+      --FontSize_Heading_M: 1.125rem;
+      --FontSize_textS: 0.6875rem;
+      --FontSize_textXS: 0.5625rem;
+      --FontSize_textOverlineS: 0.625rem;
+      --FontWeight_Thin: 400;
+      --FontWeight_Bold: 600;
+      --LetterSpacing_OverlineS: 0.051rem;
+      --ACCORDION_ANIMATION_TIME: 0.25s;
+      --TOOLTIP_DELAY: 500;
+      --small: 30;
+      --MenuSize_S: 150;
+      --MenuSize_M: 221;
+      --MenuSize_S_rem: 9.375rem;
+      --MenuSize_M_rem: 13.8125rem;
+      --ZIndex_Header: 2;
+      --ZIndex_PlayerBar: 2;
+      --ZIndex_Suggestions: 4;
+      --ZIndex_Notifications: 10;
+      --LineHeight_Text: 1rem;
+      --LineHeight_Heading_S: 0.9375rem;
+      --LineHeight_Heading_M: 1.25rem;
+      --DialogSize_S: 25rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script src="../assets/main-2bf18cc7.js"></script>
+</body>
+
+</html>
